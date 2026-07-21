@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:store_app/models/product_model.dart';
+import 'package:store_app/services/update_product_service.dart';
 import 'package:store_app/widgets/custom_elevated_button.dart';
 import 'package:store_app/widgets/custom_text_field.dart';
 
@@ -12,9 +14,10 @@ class UpdateProductView extends StatefulWidget {
 
 class _UpdateProductViewState extends State<UpdateProductView> {
   String? productName, productDescription, image;
-  double? price;
+  String? price;
   @override
   Widget build(BuildContext context) {
+    ProductModel productModel = ModalRoute.of(context)!.settings.arguments as ProductModel;
     return Scaffold(
       appBar: AppBar(
         title: Text('Update Product', style: TextStyle(color: Colors.black)),
@@ -49,7 +52,7 @@ class _UpdateProductViewState extends State<UpdateProductView> {
                 hintText: 'Price',
                 inputType: TextInputType.number,
                 onChanged: (data) {
-                  price = double.parse(data);
+                  price = data;
                 },
               ),
               SizedBox(height: 10),
@@ -60,7 +63,19 @@ class _UpdateProductViewState extends State<UpdateProductView> {
                 },
               ),
               SizedBox(height: 50),
-              CustomElevatedButton(label: 'Update', onPressed: () {}),
+              CustomElevatedButton(
+                label: 'Update',
+                onPressed: () {
+                  UpdateProductService().updateProduct(
+                    title: productName!,
+                    description: productDescription!,
+                    price: price.toString(),
+                    image: image,
+                    category: productModel.category,
+                    id: productModel.id,
+                  );
+                },
+              ),
             ],
           ),
         ),
