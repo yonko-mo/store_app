@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:store_app/widgets/custom_elevated_button.dart';
-import 'package:store_app/widgets/custom_text_form_field.dart';
+import 'package:store_app/widgets/custom_text_field.dart';
 
-class UpdateProductView extends StatelessWidget {
+class UpdateProductView extends StatefulWidget {
   const UpdateProductView({super.key});
   static String id = 'updateProductView';
+
+  @override
+  State<UpdateProductView> createState() => _UpdateProductViewState();
+}
+
+class _UpdateProductViewState extends State<UpdateProductView> {
+  String? productName, productDescription, image;
+  double? price;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,19 +27,42 @@ class UpdateProductView extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CustomTextFormField(hintText: 'Product Name'),
-            SizedBox(height: 10),
-            CustomTextFormField(hintText: 'Description'),
-            SizedBox(height: 10),
-            CustomTextFormField(hintText: 'Price'),
-            SizedBox(height: 10),
-            CustomTextFormField(hintText: 'Image'),
-            SizedBox(height: 50),
-            CustomElevatedButton(label: 'Update', onPressed: () {}),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 100),
+              CustomTextField(
+                hintText: 'Product Name',
+                onChanged: (data) {
+                  productName = data;
+                },
+              ),
+              SizedBox(height: 10),
+              CustomTextField(
+                hintText: 'Description',
+                onChanged: (data) {
+                  productDescription = data;
+                },
+              ),
+              SizedBox(height: 10),
+              CustomTextField(
+                hintText: 'Price',
+                inputType: TextInputType.number,
+                onChanged: (data) {
+                  price = double.parse(data);
+                },
+              ),
+              SizedBox(height: 10),
+              CustomTextField(
+                hintText: 'Image',
+                onChanged: (data) {
+                  image = data;
+                },
+              ),
+              SizedBox(height: 50),
+              CustomElevatedButton(label: 'Update', onPressed: () {}),
+            ],
+          ),
         ),
       ),
     );
