@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Api {
@@ -8,7 +9,7 @@ class Api {
     if (token != null) {
       headers.addAll({'Authorization': 'Bearer $token'});
     }
-    http.Response response = await http.get(Uri.parse(url),headers: headers);
+    http.Response response = await http.get(Uri.parse(url), headers: headers);
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
@@ -51,14 +52,18 @@ class Api {
     if (token != null) {
       headers.addAll({'Authorization': 'Bearer $token'});
     }
+    debugPrint('url = $url body = $body token = $token');
+
     http.Response response = await http.put(
       Uri.parse(url),
       body: body,
       headers: headers,
     );
     if (response.statusCode == 200) {
+      debugPrint('updated response ${response.body}');
       return jsonDecode(response.body);
     } else {
+      debugPrint('error ${response.statusCode} ${response.body}');
       throw Exception(
         'there is a problem with status code ${response.statusCode} with body ${jsonDecode(response.body)}',
       );

@@ -71,12 +71,13 @@ class _UpdateProductViewState extends State<UpdateProductView> {
                 SizedBox(height: 50),
                 CustomElevatedButton(
                   label: 'Update',
-                  onPressed: () {
+                  onPressed: () async {
+                    setState(() {
+                      isLoading = true;
+                    });
                     try {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      updateProduct(productModel);
+                      await updateProduct(productModel);
+                      if (!context.mounted) return;
                       showSnackBar(context, 'Product updated successfully');
                       Navigator.pop(context);
                     } catch (e) {
@@ -94,12 +95,12 @@ class _UpdateProductViewState extends State<UpdateProductView> {
     );
   }
 
-  void updateProduct(ProductModel productModel) {
-    UpdateProductService().updateProduct(
-      title: productName!,
-      description: productDescription!,
-      price: price.toString(),
-      image: image,
+  Future<void> updateProduct(ProductModel productModel) async {
+    await UpdateProductService().updateProduct(
+      title: productName ?? productModel.title,
+      description: productDescription ?? productModel.description,
+      price: price ?? productModel.price.toString(),
+      image: image ?? productModel.image,
       category: productModel.category,
       id: productModel.id,
     );

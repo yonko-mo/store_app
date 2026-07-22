@@ -23,11 +23,13 @@ class ProductModel {
     return ProductModel(
       id: jsonData['id'],
       title: jsonData['title'],
-      price: jsonData['price'].toDouble(),
+      price: double.parse(jsonData['price'].toString()),
       description: jsonData['description'],
       category: jsonData['category'],
-      image: jsonData['image'],
-      rating: RatingModel.fromJson(jsonData['rating']),
+      image: jsonData['image'] ?? '',
+      rating: jsonData['rating'] == null
+          ? RatingModel(rate: 0, count: 0)
+          : RatingModel.fromJson(jsonData['rating']),
     );
   }
 }
